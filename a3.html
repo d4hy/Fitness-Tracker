@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker API Documentation</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/minty/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 900px;
+        }
+        h1, h2, h3 {
+            margin-top: 20px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .alert {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fitness Tracker API Documentation</h1>
+        <p>Welcome to the Fitness Tracker API documentation. This document provides details on how to use the various endpoints available in this RESTful service.</p>
+        
+        <h2>Base URL</h2>
+        <p>The base URL for all endpoints is: <code>http://localhost:2000/sets</code></p>
+        
+        <h2>Endpoints</h2>
+
+        <h3>1. Retrieve All Records</h3>
+        <p><strong>URL:</strong> <code>/sets</code></p>
+        <p><strong>Method:</strong> GET</p>
+        <p><strong>Description:</strong> Retrieves all records from the set_details table.</p>
+        <p><strong>Example Request:</strong></p>
+        <pre><code>GET http://localhost:2000/sets</code></pre>
+        <p><strong>Example Response:</strong></p>
+        <pre><code>[
+  {
+    "exercise_name": "Push-ups",
+    "date": "2024-07-15",
+    "sets": 2,
+    "reps": 10,
+    "weight": 100
+  },
+  ...
+]</code></pre>
+        <h4>Error Responses:</h4>
+        <pre><code>{
+  "Error": "Error in the SQL statement. Please check."
+}</code></pre>
+
+        <h3>2. Retrieve Records by Exercise Name</h3>
+        <p><strong>URL:</strong> <code>/sets/:exercise_name</code></p>
+        <p><strong>Method:</strong> GET</p>
+        <p><strong>Description:</strong> Retrieves records from the set_details table for the specified exercise name.</p>
+        <p><strong>Example Request:</strong></p>
+        <pre><code>GET http://localhost:2000/sets/Push-ups</code></pre>
+        <p><strong>Example Response:</strong></p>
+        <pre><code>[
+  {
+    "exercise_name": "Push-ups",
+    "date": "2024-07-15",
+    "sets": 2,
+    "reps": 10,
+    "weight": 100
+  },
+  ...
+]</code></pre>
+        <h4>Error Responses:</h4>
+        <pre><code>{
+  "Error": "Error in the SQL statement. Please check."
+}</code></pre>
+
+        <h3>3. Insert a New Record</h3>
+        <p><strong>URL:</strong> <code>/sets/:exercise_name</code></p>
+        <p><strong>Method:</strong> POST</p>
+        <p><strong>Request Body:</strong></p>
+        <pre><code>{
+  "exercise_name": "Push-ups",
+  "date": "2024-07-15",
+  "sets": 2,
+  "reps": 10,
+  "weight": 100
+}</code></pre>
+        <p><strong>Example Request:</strong></p>
+        <pre><code>POST http://localhost:2000/sets/Push-ups
+Content-Type: application/json
+
+{
+  "exercise_name": "Push-ups",
+  "date": "2024-07-15",
+  "sets": 2,
+  "reps": 10,
+  "weight": 100
+}</code></pre>
+        <p><strong>Example Response:</strong></p>
+        <pre><code>{
+  "Success": "Successful: Record was added!."
+}</code></pre>
+        <h4>Error Responses:</h4>
+        <pre><code>{
+  "Error": "Failed: Record was not added."
+}</code></pre>
+
+        <h3>4. Update an Existing Record</h3>
+        <p><strong>URL:</strong> <code>/sets/:exercise_name/:set_details_id</code></p>
+        <p><strong>Method:</strong> PUT</p>
+        <p><strong>Request Body:</strong></p>
+        <pre><code>{
+  "exercise_name": "Push-ups",
+  "date": "2024-07-15",
+  "sets": 2,
+  "reps": 10,
+  "weight": 100
+}</code></pre>
+        <p><strong>Example Request:</strong></p>
+        <pre><code>PUT http://localhost:2000/sets/Push-ups/1
+Content-Type: application/json
+
+{
+  "exercise_name": "Push-ups",
+  "date": "2024-07-15",
+  "sets": 2,
+  "reps": 10,
+  "weight": 100
+}</code></pre>
+        <p><strong>Example Response:</strong></p>
+        <pre><code>{
+  "Success": "Successful: Record was updated!"
+}</code></pre>
+        <h4>Error Responses:</h4>
+        <pre><code>{
+  "Error": "Failed: Record was not updated."
+}</code></pre>
+
+        <h3>5. Delete a Record</h3>
+        <p><strong>URL:</strong> <code>/sets/:exercise_name/:set_details_id</code></p>
+        <p><strong>Method:</strong> DELETE</p>
+        <p><strong>Example Request:</strong></p>
+        <pre><code>DELETE http://localhost:2000/sets/Push-ups/1</code></pre>
+        <p><strong>Example Response:</strong></p>
+        <pre><code>{
+  "Success": "Set details deleted successfully!"
+}</code></pre>
+        <h4>Error Responses:</h4>
+        <pre><code>{
+  "Error": "Set not found."
+}</code></pre>
+
+        <h3>6. Retrieve a Record by Exercise Name and Set Details ID</h3>
+        <p><strong>URL:</strong> <code>/sets/:exercise_name/:set_details_id</code></p>
+        <p><strong>Method:</strong> GET</p>
+        <p><strong>Example Request:</strong></p>
+        <pre><code>GET http://localhost:2000/sets/Push-ups/1</code></pre>
+        <p><strong>Example Response:</strong></p>
+        <pre><code>{
+  "exercise_name": "Push-ups",
+  "date": "2024-07-15",
+  "sets": 2,
+  "reps": 10,
+  "weight": 100
+}</code></pre>
+        <h4>Error Responses:</h4>
+        <pre><code>{
+  "Error": "Set not found."
+}</code></pre>
+
+        <h3>7. Find the Record with the Highest Weight for a Given Exercise</h3>
+        <p><strong>URL:</strong> <code>/sets/:exercise_name/pr</code></p>
+        <p><strong>Method:</strong> GET</p>
+        <p><strong>Example Request:</strong></p>
+        <pre><code>GET http://localhost:2000/sets/Push-ups/pr</code></pre>
+        <p><strong>Example Response:</strong></p>
+        <pre><code>{
+  "exercise_name": "Push-ups",
+  "date": "2024-07-15",
+  "sets": 2,
+  "reps": 10,
+  "weight": 150
+}</code></pre>
+        <h4>Error Responses:</h4>
+        <pre><code>{
+  "Error": "No record found for this exercise."
+}</code></pre>
+
+        <h2>Input/Output Specifications</h2>
+        <h3>Input</h3>
+        <p>For endpoints that require a request body (POST, PUT), the input should be in JSON format. Example:</p>
+        <pre><code>{
+  "exercise_name": "Push-ups",
+  "date": "2024-07-15",
+  "sets": 2,
+  "reps": 10,
+  "weight": 100
+}</code></pre>
+
+        <h3>Output</h3>
+        <p>The output for successful requests will be in JSON format. Example:</p>
+        <pre><code>{
+  "Success": "Successful: Record was added!."
+}</code></pre>
+        <p>For error responses, the output will be in JSON format. Example:</p>
+        <pre><code>{
+  "Error": "Error in the SQL statement. Please check."
+}</code></pre>
+    </div>
+</body>
+</html>
