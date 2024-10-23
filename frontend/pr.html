@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find PR Set</title>
+    <!-- Custom CSS -->
+    <link href="styles.css" rel="stylesheet">
+    <!-- Bootswatch theme for styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/minty/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap's JavaScript and dependencies -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container ">
+        <!-- Common header -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand text-light">Fitness Tracker</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link text-light" href="addsets.html">Create</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="read.html">Read</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="pr.html">PR</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <h1 class="mt-3">Find PR Set</h1>
+        <div class="content-container p-4 mt-0">
+            <!-- Form for finding PR set -->
+            <form id="find-pr-form">
+                <div class="form-group">
+                    <label for="exercise-name" class="text-dark">Exercise Name</label>
+                    <input type="text" class="form-control" id="exercise-name" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Find PR</button>
+            </form>
+            <!-- Div to display success or error messages -->
+            <div id="message" style="display: none;"></div>
+            <!-- Table to display PR set details -->
+            <table class="table table-bordered table-hover mt-4" id="pr-set-table" style="display: none;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Field</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody id="pr-set-details-body">
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+        <!-- Common footer -->
+        <!-- Footer -->
+        <footer class="footer bg-dark text-light mt-5 p-3">
+            <div class="container">
+                <span>&copy; 2024 Fitness Tracker</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Function to handle form submission
+            function handleFormSubmission(event) {
+                event.preventDefault();
+                console.log("Form submitted");
+
+                // Get exercise name from the form
+                const exerciseName = $("#exercise-name").val();
+                console.log("Exercise name before AJAX:", exerciseName);
+
+                // AJAX request to find the PR set
+                $.ajax({
+                    url: 'http://localhost:2000/sets/' + encodeURIComponent(exerciseName) + '/pr',
+                    type: 'GET',
+                    success: function(data) {
+                        console.log("Data received:", data);
+
+                        // Display the PR set details in the table
+                        const tableBody = $('#pr-set-details-body');
+                        tableBody.empty();
+                        tableBody.append(`<tr><td>Exercise Name</td><td>${data.exercise_name}</td></tr>`);
+                        tableBody.append(`<tr><td>Date</td><td>${new Date(data.date).toLocaleDateString()}</td></tr>`);
+                        tableBody.append(`<tr><td>Sets</td><td>${data.sets}</td></tr>`);
+                        tableBody.append(`<tr><td>Reps</td><td>${data.reps}</td></tr>`);
+                        tableBody.append(`<tr><td>Weight (lbs)</td><td>${data.weight}</td></tr>`);
+                        $('#pr-set-table').show();
+                        $("#message").html('<div class="alert alert-success">PR set found successfully!</div>').show();
+                    },
+                    error: function(xhr) {
+                        // Display error message
+                        const errorMessage = xhr.responseJSON && xhr.responseJSON.Error ? xhr.responseJSON.Error : "Error finding PR set.";
+                        console.error("Error:", errorMessage);
+                        $("#message").html('<div class="alert alert-danger">' + errorMessage + '</div>').show();
+                        $('#pr-set-table').hide();
+                    }
+                });
+            }
+
+            // Handle form submission for finding PR set
+            $("#find-pr-form").submit(handleFormSubmission);
+
+            // Ensure auto-fill values are recognized by triggering the change event
+            $("#exercise-name").on("input change", function() {
+                console.log("Input changed:", $(this).val());
+            }).trigger("change");
+        });
+    </script>
+</body>
+</html>

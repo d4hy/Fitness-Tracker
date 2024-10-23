@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Set</title>
+    <!-- Custom CSS -->
+    <link href="styles.css" rel="stylesheet">
+    <!-- Bootswatch theme for styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/minty/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap's JavaScript and dependencies -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="container ">
+        <!-- Common header -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand text-light">Fitness Tracker</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link text-light" href="addsets.html">Create</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="read.html">Read</a></li>
+                    <li class="nav-item"><a class="nav-link text-light" href="pr.html">Pr</a></li>
+                </ul>
+            </div>
+        </nav>
+        <h1 class="mt-3">Update set</h1>
+        <div class="content-container p-4 mt-0">
+            <!-- Form for updating a set record -->
+            <form id="update-form">
+                <div class="form-group">
+                    <label for="exercise-name" class="text-dark">Exercise</label>
+                    <input type="text" class="form-control" id="exercise-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="date" class="text-dark">Date</label>
+                    <input type="date" class="form-control" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="sets" class="text-dark">Sets</label>
+                    <input type="number" class="form-control" id="sets" required>
+                </div>
+                <div class="form-group">
+                    <label for="reps" class="text-dark">Reps</label>
+                    <input type="number" step="0.01" class="form-control" id="reps" required>
+                </div>
+                <div class="form-group">
+                    <label for="weight" class="text-dark">Weight (lbs)</label>
+                    <input type="number" step="0.01" class="form-control" id="weight" required>
+                </div>
+              
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+            <!-- Div to display success or error messages -->
+            <div id="message"></div>
+        </div>
+        <!-- Common footer -->
+        <!-- Footer -->
+        <footer class="footer bg-dark text-light mt-5 p-3">
+            <div class="container">
+                <span>&copy; 2024 Fitness Tracker</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+        
+            // Function to get URL parameters
+            function getUrlParameter(name) {
+                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+                var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+                var results = regex.exec(location.search);
+                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+            }
+
+            // Get the exercise name and set_details_id from the URL parameters
+            const set_details_id = getUrlParameter('set_details_id');
+            const exercise_name = getUrlParameter('exercise_name');
+
+            if (set_details_id && exercise_name) {
+                // AJAX request to fetch set details
+                $.ajax({
+                    url: `http://localhost:2000/sets/${exercise_name}/${set_details_id}`,
+                    type: 'GET',
+                    success: function(data) {
+                        // Pre-fill the form fields with the fetched data
+                        $('#exercise-name').val(data.exercise_name);
+                        $('#date').val(data.date.split('T')[0]); // Format date to YYYY-MM-DD
+                        $('#sets').val(data.sets);
+                        $('#reps').val(data.reps);
+                        $('#weight').val(data.weight);
+                    },
+                    error: function(xhr) {
+                        const errorMessage = xhr.responseJSON && xhr.responseJSON.Error ? xhr.responseJSON.Error : 'Error fetching set details.';
+                        $('#message').html(`<div class="alert alert-danger">${errorMessage}</div>`);
+                    }
+                });
+
+                // Handle form submission for updating the set
+                $("#update-form").submit(function(event) {
+                    event.preventDefault();
+
+                    // Gather form data into an object
+                    const updatedSetData = {
+                        exercise_name: $("#exercise-name").val(),
+                        date: $("#date").val(),
+                        sets: $("#sets").val(),
+                        reps: $("#reps").val(),
+                        weight: $("#weight").val(),
+                    };
+
+                    // AJAX request to update the set record
+                    $.ajax({
+                        url: `http://localhost:2000/sets/${exercise_name}/${set_details_id}`,
+                        type: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify(updatedSetData),
+                        success: function(data) {
+                            // Display success message
+                            $("#message").html('<div class="alert alert-success">Set updated successfully!</div>');
+                        },
+                        error: function(xhr) {
+                            // Display error message with reason
+                            const errorMessage = xhr.responseJSON && xhr.responseJSON.Error ? xhr.responseJSON.Error : "Error updating set.";
+                            $("#message").html('<div class="alert alert-danger">' + errorMessage + '</div>');
+                        }
+                    });
+                });
+            } else {
+                $('#message').html('<div class="alert alert-danger">No set specified.</div>');
+            }
+        });
+    </script>
+
+</body>
+</html>
