@@ -1,1 +1,2 @@
-# Fitness-Tracker
+Hi, my application is website that works with SQL,CORS, express in order to let you record you reps, your weight, and your sets for your workouts. You can create entries, edit them, view them, delete  them and find your personal records for the highest amount of weight that you have lifted for them. I connected my application to my personal dataset file that I inputted as an SQL file.
+You will need to use a service like XAMPP in order to run it on a server to let you use Apache, and MySQL. You will need to run it using NPM, node.js, and the dependencies wihtin the package.json file. You just need to change in the back end directory after launching XAMPP, and do npm install and npm start to launch the entry point.
