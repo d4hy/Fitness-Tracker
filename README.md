@@ -5,4 +5,5 @@ The app uses my personal dataset, which I imported as an SQL file. To run it loc
 After launching XAMPP and starting MySQL, navigate to the backend directory and run:
 
 npm install
+
 npm start
