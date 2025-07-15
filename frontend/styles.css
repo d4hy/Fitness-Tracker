@@ -57,3 +57,8 @@ body {
   font-size: 1.25rem; /* Increase the font size of the labels */
   color: #fff; /* Optional: Change the color of the labels */
 }
+
+#pr-set-table tbody {
+  background-color: #f8f9fa !important; /* or another color */
+  color: black !important;
+}

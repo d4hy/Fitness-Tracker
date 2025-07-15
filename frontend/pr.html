@@ -16,7 +16,7 @@
 <body>
     <div class="container ">
         <!-- Common header -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-lg">
             <a class="navbar-brand text-light">Fitness Tracker</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
@@ -28,9 +28,10 @@
         </nav>
 
         <h1 class="mt-3">Find PR Set</h1>
-        <div class="content-container p-4 mt-0">
+        <div class="content-container p-4 mt-0 ">
             <!-- Form for finding PR set -->
-            <form id="find-pr-form">
+            <div id="message" style="display: none;"></div>
+            <form id="find-pr-form" name ="find-pr-form">
                 <div class="form-group">
                     <label for="exercise-name" class="text-dark">Exercise Name</label>
                     <input type="text" class="form-control" id="exercise-name" required>
@@ -38,7 +39,7 @@
                 <button type="submit" class="btn btn-primary">Find PR</button>
             </form>
             <!-- Div to display success or error messages -->
-            <div id="message" style="display: none;"></div>
+      
             <!-- Table to display PR set details -->
             <table class="table table-bordered table-hover mt-4" id="pr-set-table" style="display: none;">
                 <thead class="thead-dark">

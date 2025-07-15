@@ -11,6 +11,8 @@
 // retrieve necessary files (express and cors)
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+
 // retrieve the MySQL DB Configuration Module
 const dbConnection = require("./config");
 // use this library for parsing HTTP body requests
@@ -35,6 +37,13 @@ var app = express();
 // ----------------------------------------------
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "../frontend"))); // serve frontend files
+
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend", "read.html")); // serve read.html as the homepage
+});
+
 
 //The order of route definitions in an Express application matters because Express matches routes in the order they are defined. If a more generic route is defined before a more specific one, the generic route may capture requests that should have matched the specific route. In your case, the route /sets/:exercise_name/pr should be placed before /sets/:exercise_name to ensure the specific route is matched first.
 

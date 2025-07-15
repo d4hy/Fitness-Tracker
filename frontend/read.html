@@ -16,7 +16,7 @@
 <body>
     <div class="container ">
         <!--Common header-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-lg">
             <a class="navbar-brand">Fitness Tracker</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
@@ -28,7 +28,7 @@
         </nav>
         
         <h1 class="mt-3">Read Set</h1>
-        <div class="content-container">
+        <div class="content-container rounded-lg">
             <!-- Search input for real-time search -->
             <input type="text" id="search" class="form-control mb-3" placeholder="Search for past sets" />
             <!-- Table to display sets and dates -->
@@ -46,8 +46,12 @@
             </table>
         </div>
     </div>
+    
 
-    <script>
+   
+        
+</body>
+ <script>
         $(document).ready(function () {
             // Function to load sets from backend
             function loadSets(searchQuery = "") {
@@ -110,5 +114,4 @@
             });
         });
     </script>
-</body>
 </html>
