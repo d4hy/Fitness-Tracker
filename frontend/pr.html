@@ -70,7 +70,7 @@
                 console.log("Form submitted");
 
                 // Get exercise name from the form
-                const exerciseName = $("#exercise-name").val();
+                const exerciseName = $("#exercise-name").val().trim();
                 console.log("Exercise name before AJAX:", exerciseName);
 
                 // AJAX request to find the PR set
